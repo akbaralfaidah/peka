@@ -1,12 +1,35 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
+import ProtectedRoute from './components/ProtectedRoute'
+import LoginPage from './pages/LoginPage'
+import HomePage from './pages/HomePage'
+import HistoryPage from './pages/HistoryPage'
+
 function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-green-50">
-      <div className="text-center">
-        <img src="/peka.png" alt="Peka Logo" className="w-32 h-32 mx-auto mb-4" />
-        <h1 className="text-3xl font-bold text-gray-800">Peka</h1>
-        <p className="text-gray-500 mt-2">Mood check-in & micro-intervention</p>
-      </div>
-    </div>
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <HomePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/history"
+            element={
+              <ProtectedRoute>
+                <HistoryPage />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   )
 }
 
