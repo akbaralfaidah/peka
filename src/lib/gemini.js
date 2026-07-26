@@ -21,7 +21,7 @@ Tugasmu:
 
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -38,7 +38,7 @@ Tugasmu:
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}))
       console.error('Gemini API response error:', errorData)
-      throw new Error(`Gemini API error: ${response.status}`)
+      throw new Error(`Gemini API error (${response.status}): ${errorData?.error?.message || 'Unknown error'}`)
     }
 
     const data = await response.json()
@@ -48,7 +48,7 @@ Tugasmu:
     return data.candidates[0].content.parts[0].text
   } catch (error) {
     console.error('Gemini API failed:', error)
-    // Melemparkan error agar HomePage bisa menangkapnya dan menampilkan pesan error ke user
-    throw new Error('AI sedang kelebihan beban atau API limit tercapai. Mohon coba beberapa saat lagi.')
+    // Lemparkan pesan error asli agar terlihat di UI
+    throw new Error(error.message || 'Gagal menghubungi server AI.')
   }
 }
