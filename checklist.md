@@ -24,13 +24,13 @@ Deadline: **26 Juli 2026, 17.00 WIB**. Semua blok waktu di bawah relatif ("Jam k
 
 ## FASE 2 — Core Feature: Mood Check-in (Jam ke-2 s/d 4)
 
-- [ ] Bangun komponen `MoodPicker` (5 opsi mood)
-- [ ] Bangun komponen `TriggerInput`
-- [ ] Integrasi LLM API — kirim mood+trigger, terima response
-- [ ] **Buat fallback response** kalau LLM API gagal/timeout (jangan biarkan app blank/crash)
-- [ ] Simpan entry ke Supabase setelah dapat response
-- [ ] Test end-to-end: pilih mood → isi pemicu → dapat saran → tersimpan ke database
-- [ ] Commit: `feat: mood check-in and AI micro-intervention`
+- [x] Bangun komponen `MoodPicker` (5 opsi mood)
+- [x] Bangun komponen `TriggerInput`
+- [x] Integrasi LLM API — kirim mood+trigger, terima response
+- [x] **Buat fallback response** kalau LLM API gagal/timeout (jangan biarkan app blank/crash)
+- [x] Simpan entry ke Supabase setelah dapat response
+- [x] Test end-to-end: pilih mood → isi pemicu → dapat saran → tersimpan ke database
+- [x] Commit: `feat: mood check-in and AI micro-intervention`
 
 ## FASE 3 — Riwayat & Dashboard (Jam ke-4 s/d 5)
 
@@ -43,7 +43,7 @@ Deadline: **26 Juli 2026, 17.00 WIB**. Semua blok waktu di bawah relatif ("Jam k
 
 ## FASE 4 — Fitur Sekunder (Jam ke-5 s/d 8, HANYA jika Fase 0-3 sudah solid)
 
-- [ ] Tambahkan Framer Motion — animasi `MoodPicker` (scale on select) dan fade-in `AIResponseCard`
+- [x] Tambahkan Framer Motion — animasi `MoodPicker` (scale on select) dan fade-in `AIResponseCard`
 - [ ] Bangun `ReminderBanner` (logic sederhana: cek `created_at` entry terakhir, tampilkan banner kalau > 2 hari)
 - [ ] Bangun `RecapCardGenerator` (render ringkasan mood minggu ini + tombol download gambar via html-to-image)
 - [ ] Commit terpisah untuk tiap fitur: `feat: animations`, `feat: reminder banner`, `feat: mood recap card`

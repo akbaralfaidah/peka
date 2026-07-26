@@ -45,9 +45,31 @@
   --color-mood-capek-light: #EDF3EE;
   --color-mood-capek-dark: #6B8E6B;
 
+  /* Mood positif */
+  --color-mood-senang: #F2C85B;
+  --color-mood-senang-light: #FFF9E6;
+  --color-mood-senang-dark: #D4A017;
+
+  --color-mood-bersemangat: #FF8A80;
+  --color-mood-bersemangat-light: #FFF0EE;
+  --color-mood-bersemangat-dark: #E04E3E;
+
+  --color-mood-santai: #7EC8B8;
+  --color-mood-santai-light: #E8F6F2;
+  --color-mood-santai-dark: #3D9B85;
+
+  --color-mood-percaya-diri: #6FA3D4;
+  --color-mood-percaya-diri-light: #E8F0FA;
+  --color-mood-percaya-diri-dark: #3A6FA0;
+
+  --color-mood-romantis: #E8A0C0;
+  --color-mood-romantis-light: #FDF0F5;
+  --color-mood-romantis-dark: #C4557A;
+
   /* Accent */
   --color-accent: #7C5CBF;
   --color-accent-light: #F0EBF8;
+  --color-accent-dark: #5B3FA0;
 
   /* Shadows */
   --shadow-sm: 0 1px 3px rgba(45, 42, 50, 0.06);
@@ -123,6 +145,26 @@ body {
 
 .gradient-mood-capek {
   background: linear-gradient(135deg, #EDF3EE 0%, #A3B9A8 100%);
+}
+
+.gradient-mood-senang {
+  background: linear-gradient(135deg, #FFF9E6 0%, #F2C85B 100%);
+}
+
+.gradient-mood-bersemangat {
+  background: linear-gradient(135deg, #FFF0EE 0%, #FF8A80 100%);
+}
+
+.gradient-mood-santai {
+  background: linear-gradient(135deg, #E8F6F2 0%, #7EC8B8 100%);
+}
+
+.gradient-mood-percaya-diri {
+  background: linear-gradient(135deg, #E8F0FA 0%, #6FA3D4 100%);
+}
+
+.gradient-mood-romantis {
+  background: linear-gradient(135deg, #FDF0F5 0%, #E8A0C0 100%);
 }
 
 /* ============================================

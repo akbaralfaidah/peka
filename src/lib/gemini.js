@@ -2,7 +2,7 @@ const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY
 
 /**
  * Generate micro-intervention dari Gemini API berdasarkan mood dan trigger user.
- * @param {string} mood - Mood yang dipilih user (kewalahan, cemas, kesal, sedih, capek)
+ * @param {string} mood - Mood yang dipilih user (kewalahan, cemas, kesal, sedih, capek, senang, bersemangat, santai, percaya-diri, romantis)
  * @param {string} trigger - Teks pemicu yang diketik user
  * @returns {Promise<string>} - Saran/micro-intervention dari AI
  */
@@ -14,6 +14,7 @@ Berikan saran micro-intervention yang bisa dilakukan dalam 2 menit. Aturan:
 - Validasi perasaannya dulu sebelum memberi saran
 - Jangan menghakimi atau terlalu positif-toxic ("selalu semangat ya!")
 - Saran harus spesifik dan actionable, bukan generik
+- Kalau mood-nya positif (senang, bersemangat, santai, percaya diri, romantis), apresiasi perasaannya dan beri saran untuk menikmati/mempertahankan momen itu
 - Maksimal 3-4 paragraf pendek
 - Jangan pakai emoji berlebihan`
 
@@ -55,6 +56,11 @@ function getFallbackResponse(mood) {
     kesal: 'Kesal itu wajar, dan kamu nggak harus langsung "baik-baik aja". Coba gerakkan badanmu — jalan kaki sebentar, stretching, atau cuci muka dengan air dingin. Kadang emosi butuh dilepaskan lewat fisik.',
     sedih: 'Sedih itu bukan kelemahan. Kalau kamu butuh nangis, nangis aja. Coba dengarkan satu lagu yang kamu suka sambil merem sebentar. Beri dirimu izin untuk nggak apa-apa dulu.',
     capek: 'Capek itu tubuhmu ngasih tahu bahwa kamu butuh istirahat. Kalau bisa, istirahat 10 menit — bukan scroll HP, tapi beneran tutup mata. Kamu nggak harus produktif terus-terusan.',
+    senang: 'Seneng banget ya dengernya! Momen kayak gini berharga. Coba tulis atau screenshot perasaan ini — biar nanti kalau lagi down, kamu bisa baca lagi dan ingat bahwa hal-hal baik itu ada.',
+    bersemangat: 'Wah, energi positif kamu lagi tinggi banget! Manfaatin momentum ini — kerjain satu hal yang udah lama kamu tunda. Tapi jangan lupa tetap stay hydrated dan jaga ritme ya.',
+    santai: 'Nikmatilah momen tenang ini. Nggak harus selalu sibuk kok. Coba senderan sebentar, hirup udara dalam-dalam, dan rasakan betapa enaknya punya waktu buat diri sendiri.',
+    'percaya-diri': 'Keren banget! Percaya diri itu aset yang berharga. Coba tuliskan apa yang bikin kamu merasa begini — biar bisa kamu baca ulang di hari-hari yang kurang yakin.',
+    romantis: 'Aww, hati lagi berbunga-bunga ya? Nikmati perasaan hangat ini. Kalau ada orang yang bikin kamu merasa begini, mungkin ini saat yang pas buat bilang terima kasih atau kirim pesan kecil.',
   }
   return fallbacks[mood] || 'Perasaanmu valid. Coba tarik napas dalam beberapa kali dan beri dirimu jeda sebentar. Kamu nggak harus punya jawaban sekarang.'
 }
