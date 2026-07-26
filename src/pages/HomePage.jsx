@@ -142,23 +142,23 @@ export default function HomePage() {
       />
 
       {/* Header */}
-      <header className="relative z-10 flex items-center justify-between px-4 sm:px-6 pt-4 pb-2">
-        <div className="flex items-center gap-2.5">
-          <img src="/peka.png" alt="Peka" className="w-9 h-9 object-contain" />
-          <span className="font-bold text-[var(--color-text-primary)] text-lg tracking-tight">Peka</span>
+      <header className="relative z-10 flex items-center justify-between px-4 sm:px-8 md:px-12 pt-6 pb-4">
+        <div className="flex items-center gap-3">
+          <img src="/peka.png" alt="Peka" className="w-10 h-10 md:w-14 md:h-14 object-contain" />
+          <span className="font-bold text-[var(--color-text-primary)] text-xl md:text-2xl tracking-tight">Peka</span>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3 md:gap-4">
           <button
             onClick={handleViewHistory}
-            className="px-3.5 py-2 text-xs font-medium rounded-[var(--radius-full)] glass text-[var(--color-text-secondary)] hover:bg-white/80 transition-all cursor-pointer"
+            className="px-4 py-2 md:px-6 md:py-2.5 text-sm md:text-base font-medium rounded-[var(--radius-full)] glass text-[var(--color-text-secondary)] hover:bg-white/80 transition-all cursor-pointer"
             id="btn-header-history"
           >
             📋 Riwayat
           </button>
           <button
             onClick={() => setShowLogoutModal(true)}
-            className="px-3.5 py-2 text-xs font-medium rounded-[var(--radius-full)] bg-red-50 text-red-600 hover:bg-red-500 hover:text-white border border-red-100 hover:border-red-500 transition-all cursor-pointer"
+            className="px-4 py-2 md:px-6 md:py-2.5 text-sm md:text-base font-medium rounded-[var(--radius-full)] bg-red-50 text-red-600 hover:bg-red-500 hover:text-white border border-red-100 hover:border-red-500 transition-all cursor-pointer"
             id="btn-signout"
           >
             Keluar
