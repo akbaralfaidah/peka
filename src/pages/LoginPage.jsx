@@ -106,9 +106,8 @@ export default function LoginPage() {
         {/* LEFT COLUMN: Branding & 3D Animation */}
         <div className="w-full md:w-5/12 bg-gradient-to-br from-[#FFE3E8] via-[#EAE1FF] to-[#D5F0FF] relative flex flex-col p-10 sm:p-12 md:p-16 overflow-hidden">
           {/* Logo */}
-          <div className="relative z-10 flex items-center gap-3 mb-auto">
-            <img src="/peka.png" alt="Peka Logo" className="w-10 h-10 object-contain drop-shadow-sm" />
-            <span className="font-extrabold text-3xl tracking-tight text-[#2B2353]">Peka</span>
+          <div className="relative z-10 flex justify-center md:justify-start mb-auto">
+            <img src="/peka.png" alt="Peka Logo" className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-sm" />
           </div>
 
           {/* 3D Emoji Animation Area */}
