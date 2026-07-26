@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import MoodEntryCard from '../components/MoodEntryCard'
+import RecapCardGenerator from '../components/RecapCardGenerator'
 
 export default function HistoryPage() {
   const { user } = useAuth()
@@ -84,6 +85,9 @@ export default function HistoryPage() {
             </div>
           ) : (
             <div className="space-y-4">
+              <RecapCardGenerator entries={entries} />
+              
+              <h3 className="font-bold text-[var(--color-text-primary)] mb-4 px-1">Riwayat Lengkap</h3>
               <AnimatePresence>
                 {entries.map((entry, index) => (
                   <motion.div

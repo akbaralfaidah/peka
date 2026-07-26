@@ -54,9 +54,9 @@
 - [x] Git push
 
 ## Tahap 9 (95%) — Mood Recap Card
-- [ ] RecapCardGenerator
-- [ ] Download feature
-- [ ] Git push
+- [x] RecapCardGenerator
+- [x] Download feature
+- [x] Git push
 
 ## Tahap 10 (100%) — Deploy
 - [ ] Vercel deploy
