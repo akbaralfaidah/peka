@@ -34,10 +34,10 @@ Deadline: **26 Juli 2026, 17.00 WIB**. Semua blok waktu di bawah relatif ("Jam k
 
 ## FASE 3 — Riwayat & Dashboard (Jam ke-4 s/d 5)
 
-- [ ] Bangun `HistoryList` — tampilkan entry mood user, terbaru di atas
-- [ ] Tombol feedback "Membantu/Kurang membantu" pada tiap entry
-- [ ] Test: data baru langsung muncul di riwayat tanpa refresh manual (atau minimal setelah refresh)
-- [ ] Commit: `feat: mood history dashboard`
+- [x] Bangun `HistoryList` — tampilkan entry mood user, terbaru di atas
+- [x] Tombol feedback "Membantu/Kurang membantu" pada tiap entry
+- [x] Test: data baru langsung muncul di riwayat tanpa refresh manual (atau minimal setelah refresh)
+- [x] Commit: `feat: mood history dashboard`
 
 **>>> CHECKPOINT: Fondasi MVP selesai di sini. Jangan lanjut ke fitur sekunder kalau bagian di atas belum stabil & bebas bug. <<<**
 
