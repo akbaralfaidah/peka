@@ -106,7 +106,7 @@ export default function LoginPage() {
         {/* LEFT COLUMN: Branding & 3D Animation */}
         <div className="w-full md:w-5/12 bg-gradient-to-br from-[#FFE3E8] via-[#EAE1FF] to-[#D5F0FF] relative flex flex-col p-10 sm:p-12 md:p-16 overflow-hidden">
           {/* Logo */}
-          <div className="relative z-10 flex justify-center md:justify-start mb-auto">
+          <div className="relative z-10 flex justify-center mb-auto">
             <img src="/peka.png" alt="Peka Logo" className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-sm" />
           </div>
 
@@ -139,8 +139,8 @@ export default function LoginPage() {
             </AnimatePresence>
           </div>
 
-          <div className="relative z-10 mt-auto flex justify-center md:justify-start">
-            <p className="text-[#2B2353]/70 font-medium text-lg leading-snug text-center md:text-left">
+          <div className="relative z-10 mt-auto flex justify-center">
+            <p className="text-[#2B2353]/70 font-medium text-lg leading-snug text-center">
               Pahami perasaanmu, <br className="hidden md:block" />
               karena setiap mood itu penting.
             </p>
