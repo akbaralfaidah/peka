@@ -140,9 +140,9 @@ export default function LoginPage() {
             </AnimatePresence>
           </div>
 
-          <div className="relative z-10 mt-auto">
-            <p className="text-[#2B2353]/70 font-medium text-lg leading-snug">
-              Pahami perasaanmu, <br />
+          <div className="relative z-10 mt-auto flex justify-center md:justify-start">
+            <p className="text-[#2B2353]/70 font-medium text-lg leading-snug text-center md:text-left">
+              Pahami perasaanmu, <br className="hidden md:block" />
               karena setiap mood itu penting.
             </p>
           </div>
@@ -287,8 +287,22 @@ export default function LoginPage() {
               <button
                 type="button"
                 className="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors"
-                title="Google Login (Coming Soon)"
-                onClick={() => alert("Google Login akan segera hadir!")}
+                onClick={async () => {
+                  try {
+                    setLoading(true)
+                    const { error } = await supabase.auth.signInWithOAuth({
+                      provider: 'google',
+                      options: {
+                        redirectTo: `${window.location.origin}/home`
+                      }
+                    })
+                    if (error) throw error
+                  } catch (err) {
+                    setError(err.message)
+                    setLoading(false)
+                  }
+                }}
+                disabled={loading}
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
