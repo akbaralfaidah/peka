@@ -41,6 +41,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [isSignUp, setIsSignUp] = useState(false)
   const [showPrivacyModal, setShowPrivacyModal] = useState(false)
+  const [termsAccepted, setTermsAccepted] = useState(false)
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -250,6 +251,8 @@ export default function LoginPage() {
                     type="checkbox"
                     id="terms"
                     required
+                    checked={termsAccepted}
+                    onChange={(e) => setTermsAccepted(e.target.checked)}
                     className="mt-1 w-4 h-4 rounded border-gray-300 text-[#111] focus:ring-[#111] cursor-pointer"
                   />
                   <label htmlFor="terms" className="text-xs text-gray-500 leading-relaxed cursor-pointer">
@@ -283,11 +286,31 @@ export default function LoginPage() {
             </div>
 
             {/* Social Buttons */}
-            <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-col items-center gap-4 w-full">
+              <div className="flex items-start gap-3 w-full">
+                <input
+                  type="checkbox"
+                  id="google-terms"
+                  checked={termsAccepted}
+                  onChange={(e) => {
+                    setTermsAccepted(e.target.checked)
+                    if (e.target.checked) setError(null)
+                  }}
+                  className="mt-1 w-4 h-4 rounded border-gray-300 text-[#111] focus:ring-[#111] cursor-pointer shrink-0"
+                />
+                <label htmlFor="google-terms" className="text-xs text-gray-500 leading-relaxed cursor-pointer text-left">
+                  Untuk melanjutkan dengan Google, saya menyetujui <button type="button" onClick={() => setShowPrivacyModal(true)} className="text-[var(--color-accent)] font-bold hover:underline">Kebijakan Privasi</button> AI.
+                </label>
+              </div>
+
               <button
                 type="button"
-                className="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                className="w-full py-3.5 px-6 border border-gray-200 rounded-2xl flex items-center justify-center gap-3 hover:bg-gray-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium text-gray-700"
                 onClick={async () => {
+                  if (!termsAccepted) {
+                    setError('Kamu harus menyetujui Kebijakan Privasi terlebih dahulu untuk melanjutkan dengan Google.')
+                    return
+                  }
                   try {
                     setLoading(true)
                     const { error } = await supabase.auth.signInWithOAuth({
@@ -306,11 +329,8 @@ export default function LoginPage() {
                 disabled={loading}
               >
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
+                Lanjutkan dengan Google
               </button>
-              
-              <p className="text-[10px] text-gray-400 text-center max-w-xs">
-                Dengan melanjutkan, kamu menyetujui <button type="button" onClick={() => setShowPrivacyModal(true)} className="font-medium underline hover:text-gray-600">Kebijakan Privasi</button> kami terkait analisis data oleh AI.
-              </p>
             </div>
 
           </div>
