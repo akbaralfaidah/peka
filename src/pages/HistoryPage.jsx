@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useMemo } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../lib/supabase'
@@ -15,7 +15,7 @@ export default function HistoryPage() {
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
   const [error, setError] = useState(null)
-  
+
   const [page, setPage] = useState(0)
   const [hasMore, setHasMore] = useState(true)
 
@@ -39,7 +39,7 @@ export default function HistoryPage() {
     try {
       if (pageNumber === 0) setLoading(true)
       else setLoadingMore(true)
-      
+
       const { data, error } = await supabase
         .from('mood_entries')
         .select('*')
@@ -48,7 +48,7 @@ export default function HistoryPage() {
         .range(pageNumber * 10, (pageNumber + 1) * 10 - 1)
 
       if (error) throw error
-      
+
       if (data) {
         if (pageNumber === 0) {
           setHistoryEntries(data)
@@ -96,7 +96,7 @@ export default function HistoryPage() {
       {/* Header */}
       <header className="relative z-10 flex items-center justify-between px-4 sm:px-6 pt-4 pb-2 border-b border-[var(--color-border-light)] bg-white/30 backdrop-blur-md">
         <div className="flex items-center gap-3">
-          <button 
+          <button
             onClick={() => navigate('/home')}
             className="w-8 h-8 flex items-center justify-center rounded-full bg-white/50 hover:bg-white text-[var(--color-text-secondary)] transition-colors cursor-pointer"
           >
@@ -127,7 +127,7 @@ export default function HistoryPage() {
               <p className="text-sm text-[var(--color-text-secondary)] mb-6">
                 Riwayat mood kamu masih kosong. Yuk, mulai check-in pertamamu!
               </p>
-              <Link 
+              <Link
                 to="/home"
                 className="inline-block py-2.5 px-6 rounded-[var(--radius-full)] bg-[var(--color-accent)] text-white text-sm font-medium hover:bg-[var(--color-accent-dark)] transition-colors"
               >
@@ -145,14 +145,14 @@ export default function HistoryPage() {
               {/* Kolom Kanan: Scrollable */}
               <div className="lg:col-span-7 xl:col-span-8 space-y-4">
                 <h3 className="font-bold text-[var(--color-text-primary)] mb-4 px-1">Riwayat Lengkap</h3>
-                
+
                 {Object.entries(groupedHistory).map(([dateLabel, dayEntries]) => (
                   <div key={dateLabel} className="mb-6 relative">
                     {/* Date Header */}
                     <div className="sticky top-[60px] z-20 backdrop-blur-xl bg-white/70 py-2.5 px-4 mb-3 rounded-xl border border-[var(--color-border-light)] shadow-sm">
                       <h4 className="font-bold text-[var(--color-text-secondary)] text-sm tracking-wide">{dateLabel}</h4>
                     </div>
-                    
+
                     {/* Entries for the Date */}
                     <div className="space-y-4">
                       <AnimatePresence>
@@ -170,10 +170,10 @@ export default function HistoryPage() {
                     </div>
                   </div>
                 ))}
-                
+
                 {hasMore ? (
                   <div className="text-center py-6">
-                    <button 
+                    <button
                       onClick={() => {
                         const nextPage = page + 1
                         setPage(nextPage)
