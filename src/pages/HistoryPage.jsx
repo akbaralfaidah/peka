@@ -20,6 +20,7 @@ export default function HistoryPage() {
   const [hasMore, setHasMore] = useState(true)
 
   const fetchStats = useCallback(async () => {
+    if (!user?.id) return
     try {
       const { data, error } = await supabase
         .from('mood_entries')
@@ -31,9 +32,10 @@ export default function HistoryPage() {
     } catch (err) {
       console.error('Failed to fetch stats:', err)
     }
-  }, [user.id])
+  }, [user?.id])
 
   const fetchHistory = useCallback(async (pageNumber = 0) => {
+    if (!user?.id) return
     try {
       if (pageNumber === 0) setLoading(true)
       else setLoadingMore(true)
@@ -62,12 +64,13 @@ export default function HistoryPage() {
       setLoading(false)
       setLoadingMore(false)
     }
-  }, [user.id])
+  }, [user?.id])
 
   useEffect(() => {
+    if (!user) return
     fetchStats()
     fetchHistory(0)
-  }, [fetchStats, fetchHistory])
+  }, [fetchStats, fetchHistory, user])
 
   // Group history by date
   const groupedHistory = useMemo(() => {
