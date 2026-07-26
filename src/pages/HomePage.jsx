@@ -46,7 +46,7 @@ export default function HomePage() {
   const [triggerText, setTriggerText] = useState('')
   const [aiResponse, setAiResponse] = useState('')
   const [error, setError] = useState(null)
-  
+
   const [showLogoutModal, setShowLogoutModal] = useState(false)
 
   const [streak, setStreak] = useState(0)
@@ -111,8 +111,9 @@ export default function HomePage() {
     navigate('/history')
   }, [navigate])
 
-  // Display name dari metadata (jika ada) atau fallback ke email
-  const displayName = user?.user_metadata?.display_name || user?.email?.split('@')[0] || ''
+  // Ambil nama depan saja agar tidak kepanjangan di layar HP
+  const rawName = user?.user_metadata?.full_name || user?.user_metadata?.name || user?.user_metadata?.display_name || user?.email?.split('@')[0] || ''
+  const displayName = rawName.split(' ')[0]
 
   return (
     <div className="min-h-[100dvh] flex flex-col gradient-warm relative overflow-hidden">
@@ -336,7 +337,7 @@ export default function HomePage() {
 
       {/* Footer Disclaimer */}
       <footer className="relative z-10 text-center px-4 py-3 shrink-0">
-        <p className="text-[10px] text-[var(--color-text-muted)] max-w-sm mx-auto leading-relaxed">
+        <p className="text-[14px] text-[var(--color-text-muted)] max-w-sm mx-auto leading-relaxed">
           Bukan pengganti bantuan profesional. Kalau kamu butuh dukungan lebih, hubungi profesional kesehatan mental atau hubungi 119.
         </p>
       </footer>
