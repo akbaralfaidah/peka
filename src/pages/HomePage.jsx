@@ -46,6 +46,8 @@ export default function HomePage() {
   const [triggerText, setTriggerText] = useState('')
   const [aiResponse, setAiResponse] = useState('')
   const [error, setError] = useState(null)
+  
+  const [showLogoutModal, setShowLogoutModal] = useState(false)
 
   const [streak, setStreak] = useState(0)
 
@@ -155,11 +157,7 @@ export default function HomePage() {
             📋 Riwayat
           </button>
           <button
-            onClick={() => {
-              if (window.confirm('Apakah kamu yakin ingin keluar dari Peka?')) {
-                signOut()
-              }
-            }}
+            onClick={() => setShowLogoutModal(true)}
             className="px-3.5 py-2 text-xs font-medium rounded-[var(--radius-full)] bg-red-50 text-red-600 hover:bg-red-500 hover:text-white border border-red-100 hover:border-red-500 transition-all cursor-pointer"
             id="btn-signout"
           >
@@ -342,6 +340,49 @@ export default function HomePage() {
           Bukan pengganti bantuan profesional. Kalau kamu butuh dukungan lebih, hubungi profesional kesehatan mental atau hubungi 119.
         </p>
       </footer>
+
+      {/* Logout Confirmation Modal */}
+      <AnimatePresence>
+        {showLogoutModal && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="bg-white rounded-3xl p-6 shadow-2xl max-w-sm w-full text-center relative z-50"
+              initial={{ scale: 0.9, opacity: 0, y: 10 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 10 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            >
+              <div className="text-5xl mb-4">🚪</div>
+              <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-2">Yakin ingin keluar?</h3>
+              <p className="text-sm text-[var(--color-text-secondary)] mb-6">
+                Sesi kamu akan diakhiri. Kamu harus login kembali untuk mencatat mood atau melihat riwayatmu.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowLogoutModal(false)}
+                  className="flex-1 py-3 px-4 rounded-[var(--radius-full)] bg-gray-100 text-[var(--color-text-secondary)] font-medium hover:bg-gray-200 transition-colors"
+                >
+                  Batal
+                </button>
+                <button
+                  onClick={() => {
+                    setShowLogoutModal(false)
+                    signOut()
+                  }}
+                  className="flex-1 py-3 px-4 rounded-[var(--radius-full)] bg-red-600 text-white font-medium hover:bg-red-700 transition-colors shadow-lg shadow-red-600/30"
+                >
+                  Ya, Keluar
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
