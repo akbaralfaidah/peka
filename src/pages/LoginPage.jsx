@@ -39,7 +39,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [isSignUp, setIsSignUp] = useState(true)
+  const [isSignUp, setIsSignUp] = useState(false)
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -76,6 +76,7 @@ export default function LoginPage() {
           }
         })
         if (error) throw error
+        setIsSignUp(false)
         setMessage('Pendaftaran berhasil! Silakan cek email untuk verifikasi atau langsung masuk.')
       } else {
         const { error } = await supabase.auth.signInWithPassword({
@@ -85,7 +86,11 @@ export default function LoginPage() {
         if (error) throw error
       }
     } catch (err) {
-      setError(err.message || 'Terjadi kesalahan saat otentikasi.')
+      if (err.message === 'Email not confirmed') {
+        setError('Email Anda belum terverifikasi. Silakan buka kotak masuk email Anda dan klik link verifikasi untuk melanjutkan.')
+      } else {
+        setError(err.message || 'Terjadi kesalahan saat otentikasi.')
+      }
     } finally {
       setLoading(false)
     }
@@ -158,7 +163,11 @@ export default function LoginPage() {
               <div className="text-sm text-gray-500">
                 {isSignUp ? 'Already have an account? ' : "Don't have an account? "}
                 <button
-                  onClick={() => setIsSignUp(!isSignUp)}
+                  onClick={() => {
+                    setIsSignUp(!isSignUp)
+                    setError(null)
+                    setMessage(null)
+                  }}
                   className="font-bold text-gray-900 hover:underline"
                 >
                   {isSignUp ? 'Log in' : 'Sign up'}
