@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import MoodEntryCard from '../components/MoodEntryCard'
 import RecapCardGenerator from '../components/RecapCardGenerator'
+import MoodChart from '../components/MoodChart'
 
 export default function HistoryPage() {
   const { user } = useAuth()
@@ -56,8 +57,8 @@ export default function HistoryPage() {
       </header>
 
       {/* Main Content */}
-      <main className="relative z-10 flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6">
-        <div className="max-w-xl mx-auto w-full">
+      <main className="relative z-10 flex-1 overflow-y-auto overflow-x-hidden px-4 sm:px-6 py-6 pb-20 max-w-6xl mx-auto w-full">
+        <div className="w-full">
           {error && (
             <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-[var(--radius-md)] text-sm text-center">
               {error}
@@ -84,28 +85,35 @@ export default function HistoryPage() {
               </Link>
             </div>
           ) : (
-            <div className="space-y-4">
-              <RecapCardGenerator entries={entries} />
-              
-              <h3 className="font-bold text-[var(--color-text-primary)] mb-4 px-1">Riwayat Lengkap</h3>
-              <AnimatePresence>
-                {entries.map((entry, index) => (
-                  <motion.div
-                    key={entry.id}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.05, duration: 0.3 }}
-                  >
-                    <MoodEntryCard entry={entry} />
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-              
-              {/* End of list indicator */}
-              <div className="text-center py-8">
-                <p className="text-xs text-[var(--color-text-muted)]">
-                  Itu saja catatanmu sejauh ini. ✨
-                </p>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              {/* Kolom Kiri: Sticky */}
+              <div className="lg:col-span-5 xl:col-span-4 lg:sticky lg:top-6 space-y-6">
+                <RecapCardGenerator entries={entries} />
+                <MoodChart entries={entries} />
+              </div>
+
+              {/* Kolom Kanan: Scrollable */}
+              <div className="lg:col-span-7 xl:col-span-8 space-y-4">
+                <h3 className="font-bold text-[var(--color-text-primary)] mb-4 px-1">Riwayat Lengkap</h3>
+                <AnimatePresence>
+                  {entries.map((entry, index) => (
+                    <motion.div
+                      key={entry.id}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05, duration: 0.3 }}
+                    >
+                      <MoodEntryCard entry={entry} />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+                
+                {/* End of list indicator */}
+                <div className="text-center py-8">
+                  <p className="text-xs text-[var(--color-text-muted)]">
+                    Itu saja catatanmu sejauh ini. ✨
+                  </p>
+                </div>
               </div>
             </div>
           )}

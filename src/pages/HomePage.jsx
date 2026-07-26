@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
@@ -9,7 +9,8 @@ import MoodPicker from '../components/MoodPicker'
 import TriggerInput from '../components/TriggerInput'
 import AIResponseCard from '../components/AIResponseCard'
 import LoadingAI from '../components/LoadingAI'
-import ReminderBanner from '../components/ReminderBanner'
+import StreakBadge from '../components/StreakBadge'
+import { calculateStreak } from '../lib/streak'
 
 /**
  * HomePage — Halaman utama Mood Check-in.
@@ -46,8 +47,25 @@ export default function HomePage() {
   const [aiResponse, setAiResponse] = useState('')
   const [error, setError] = useState(null)
 
+  const [streak, setStreak] = useState(0)
+
   const currentMood = selectedMood ? getMoodById(selectedMood) : null
   const greeting = useMemo(() => getGreeting(), [])
+
+  useEffect(() => {
+    if (!user) return
+    const fetchStreak = async () => {
+      const { data } = await supabase
+        .from('mood_entries')
+        .select('created_at')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+      if (data) {
+        setStreak(calculateStreak(data.map(d => d.created_at)))
+      }
+    }
+    fetchStreak()
+  }, [user])
 
   // Handle submit
   const handleSubmit = useCallback(async () => {
@@ -74,7 +92,7 @@ export default function HomePage() {
       setStep(STEP.RESULT)
     } catch (err) {
       console.error('Check-in failed:', err)
-      setError('Gagal mendapatkan saran. Coba lagi ya.')
+      setError(err.message || 'Gagal mendapatkan saran. Coba lagi ya.')
       setStep(STEP.SELECT)
     }
   }, [selectedMood, triggerText, user])
@@ -148,7 +166,7 @@ export default function HomePage() {
 
       {/* Main content */}
       <main className="relative z-10 flex-1 flex flex-col px-4 sm:px-6 py-4 sm:py-6">
-        <ReminderBanner />
+
         <AnimatePresence mode="wait">
 
           {/* ========================= STEP: SELECT ========================= */}
@@ -177,10 +195,13 @@ export default function HomePage() {
                     👋
                   </motion.div>
                   <div className="flex-1 min-w-0">
-                    <h1 className="text-lg sm:text-xl font-bold text-[var(--color-text-primary)] leading-snug">
-                      {greeting}, {displayName}!
-                    </h1>
-                    <p className="text-sm text-[var(--color-text-secondary)] mt-1 leading-relaxed">
+                    <div className="flex flex-wrap items-center gap-3 mb-1">
+                      <h1 className="text-lg sm:text-xl font-bold text-[var(--color-text-primary)] leading-snug truncate">
+                        {greeting}, {displayName}!
+                      </h1>
+                      <StreakBadge streak={streak} />
+                    </div>
+                    <p className="text-sm sm:text-base text-[var(--color-text-secondary)] leading-relaxed">
                       Apa yang kamu rasakan sekarang? Pilih mood di bawah dan ceritakan sedikit — kita cari jalan keluarnya bareng.
                     </p>
                   </div>

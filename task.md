@@ -58,7 +58,15 @@
 - [x] Download feature
 - [x] Git push
 
-## Tahap 10 (100%) — Deploy
-- [ ] Vercel deploy
+## Tahap 10 — Deploy (100%) ✅
+- [x] Vercel deploy prep
+
+## Tahap 11 — Polish Lanjutan (Riwayat, Grafik, Streak) ✅
+- [x] Hapus ReminderBanner dari project
+- [x] Buat utilitas Streak (lib/streak.js)
+- [x] Buat komponen StreakBadge & pasang di HomePage
+- [x] Buat komponen MoodChart
+- [x] Romback layout HistoryPage (2 kolom, sticky kiri)
+- [x] Pasang MoodChart dan RecapCard di sisi kiri HistoryPage
 - [ ] Final testing
 - [ ] Git push final
