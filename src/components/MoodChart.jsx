@@ -4,6 +4,8 @@ import { getMoodById } from '../lib/moods'
 
 export default function MoodChart({ entries }) {
   const [timeFilter, setTimeFilter] = useState('7days')
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
 
   const distribution = useMemo(() => {
     if (!entries || entries.length === 0) return []
@@ -14,6 +16,20 @@ export default function MoodChart({ entries }) {
       
       const entryDate = new Date(entry.created_at)
       const now = new Date()
+
+      if (timeFilter === 'today') {
+        return entryDate.toDateString() === now.toDateString()
+      }
+
+      if (timeFilter === 'custom') {
+        if (!startDate || !endDate) return true
+        const start = new Date(startDate)
+        start.setHours(0, 0, 0, 0)
+        const end = new Date(endDate)
+        end.setHours(23, 59, 59, 999)
+        return entryDate >= start && entryDate <= end
+      }
+      
       const diffTime = Math.abs(now - entryDate)
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
       
@@ -47,19 +63,45 @@ export default function MoodChart({ entries }) {
 
   return (
     <div className="bg-white/60 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-[var(--color-border-light)] mt-6">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-bold text-[var(--color-text-primary)] flex items-center gap-2">
-          <span>📊</span> Distribusi
-        </h3>
-        <select 
-          value={timeFilter} 
-          onChange={(e) => setTimeFilter(e.target.value)}
-          className="text-xs bg-white/50 border border-gray-200 rounded-full px-3 py-1.5 text-[var(--color-text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] cursor-pointer"
-        >
-          <option value="7days">7 Hari Terakhir</option>
-          <option value="30days">30 Hari Terakhir</option>
-          <option value="all">Semua Waktu</option>
-        </select>
+      <div className="flex flex-col gap-3 mb-4">
+        <div className="flex items-center justify-between">
+          <h3 className="font-bold text-[var(--color-text-primary)] flex items-center gap-2">
+            <span>📊</span> Distribusi
+          </h3>
+          <select 
+            value={timeFilter} 
+            onChange={(e) => setTimeFilter(e.target.value)}
+            className="text-xs bg-white/50 border border-gray-200 rounded-full px-3 py-1.5 text-[var(--color-text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] cursor-pointer"
+          >
+            <option value="today">Hari Ini</option>
+            <option value="7days">7 Hari Terakhir</option>
+            <option value="30days">30 Hari Terakhir</option>
+            <option value="all">Semua Waktu</option>
+            <option value="custom">Kustom Waktu</option>
+          </select>
+        </div>
+
+        {timeFilter === 'custom' && (
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }} 
+            animate={{ opacity: 1, height: 'auto' }}
+            className="flex items-center gap-2 text-xs text-[var(--color-text-secondary)]"
+          >
+            <input 
+              type="date" 
+              value={startDate} 
+              onChange={(e) => setStartDate(e.target.value)}
+              className="bg-white/50 border border-gray-200 rounded-lg px-2 py-1.5 focus:outline-none focus:border-[var(--color-accent)] w-full"
+            />
+            <span>-</span>
+            <input 
+              type="date" 
+              value={endDate} 
+              onChange={(e) => setEndDate(e.target.value)}
+              className="bg-white/50 border border-gray-200 rounded-lg px-2 py-1.5 focus:outline-none focus:border-[var(--color-accent)] w-full"
+            />
+          </motion.div>
+        )}
       </div>
       
       {/* Segmented Bar */}
