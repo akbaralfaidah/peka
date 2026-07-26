@@ -111,23 +111,26 @@ export default function LoginPage() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentEmoji.name}
-                initial={{ opacity: 0, scale: 0.5, y: 50, rotate: -20 }}
-                animate={{ 
-                  opacity: 1, 
-                  scale: 1, 
-                  y: [0, -15, 0],
-                  rotate: [-5, 5, -5]
-                }}
-                exit={{ opacity: 0, scale: 0.5, y: -50, rotate: 20 }}
-                transition={{ 
-                  duration: 0.8,
-                  y: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
-                  rotate: { duration: 3, repeat: Infinity, ease: "easeInOut" }
-                }}
-                className="text-9xl md:text-[140px] drop-shadow-2xl select-none"
-                style={{ filter: `drop-shadow(0 20px 30px ${currentEmoji.color}60)` }}
+                initial={{ opacity: 0, scale: 0.5, y: 30 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.5, y: -30 }}
+                transition={{ duration: 0.5 }}
+                className="absolute"
               >
-                {currentEmoji.char}
+                <motion.div
+                  animate={{ 
+                    y: [0, -15, 0],
+                    rotate: [-5, 5, -5]
+                  }}
+                  transition={{ 
+                    y: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
+                    rotate: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                  }}
+                  className="text-9xl md:text-[140px] drop-shadow-2xl select-none"
+                  style={{ filter: `drop-shadow(0 20px 30px ${currentEmoji.color}60)` }}
+                >
+                  {currentEmoji.char}
+                </motion.div>
               </motion.div>
             </AnimatePresence>
           </div>

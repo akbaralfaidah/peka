@@ -36,32 +36,19 @@ Tugasmu:
     )
 
     if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      console.error('Gemini API response error:', errorData)
       throw new Error(`Gemini API error: ${response.status}`)
     }
 
     const data = await response.json()
-    return data.candidates?.[0]?.content?.parts?.[0]?.text || getFallbackResponse(mood)
+    if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
+      throw new Error('Format response dari Gemini tidak valid')
+    }
+    return data.candidates[0].content.parts[0].text
   } catch (error) {
     console.error('Gemini API failed:', error)
-    return getFallbackResponse(mood)
+    // Melemparkan error agar HomePage bisa menangkapnya dan menampilkan pesan error ke user
+    throw new Error('AI sedang kelebihan beban atau API limit tercapai. Mohon coba beberapa saat lagi.')
   }
-}
-
-/**
- * Fallback response jika Gemini API gagal/timeout
- */
-function getFallbackResponse(mood) {
-  const fallbacks = {
-    kewalahan: 'Wajar banget kalau kamu merasa kewalahan. Coba tarik napas dalam 4 detik, tahan 4 detik, keluarkan 4 detik. Ulangi 3 kali. Kadang yang kita butuhkan cuma jeda sebentar untuk mengatur ulang pikiran.',
-    cemas: 'Rasa cemas itu sinyal dari tubuhmu bahwa ada sesuatu yang perlu diperhatikan. Coba tulis 3 hal yang bisa kamu kontrol sekarang, dan 3 hal yang di luar kendalimu. Fokus ke yang bisa kamu kontrol dulu.',
-    kesal: 'Kesal itu wajar, dan kamu nggak harus langsung "baik-baik aja". Coba gerakkan badanmu — jalan kaki sebentar, stretching, atau cuci muka dengan air dingin. Kadang emosi butuh dilepaskan lewat fisik.',
-    sedih: 'Sedih itu bukan kelemahan. Kalau kamu butuh nangis, nangis aja. Coba dengarkan satu lagu yang kamu suka sambil merem sebentar. Beri dirimu izin untuk nggak apa-apa dulu.',
-    capek: 'Capek itu tubuhmu ngasih tahu bahwa kamu butuh istirahat. Kalau bisa, istirahat 10 menit — bukan scroll HP, tapi beneran tutup mata. Kamu nggak harus produktif terus-terusan.',
-    senang: 'Seneng banget ya dengernya! Momen kayak gini berharga. Coba tulis atau screenshot perasaan ini — biar nanti kalau lagi down, kamu bisa baca lagi dan ingat bahwa hal-hal baik itu ada.',
-    bersemangat: 'Wah, energi positif kamu lagi tinggi banget! Manfaatin momentum ini — kerjain satu hal yang udah lama kamu tunda. Tapi jangan lupa tetap stay hydrated dan jaga ritme ya.',
-    santai: 'Nikmatilah momen tenang ini. Nggak harus selalu sibuk kok. Coba senderan sebentar, hirup udara dalam-dalam, dan rasakan betapa enaknya punya waktu buat diri sendiri.',
-    'percaya-diri': 'Keren banget! Percaya diri itu aset yang berharga. Coba tuliskan apa yang bikin kamu merasa begini — biar bisa kamu baca ulang di hari-hari yang kurang yakin.',
-    romantis: 'Aww, hati lagi berbunga-bunga ya? Nikmati perasaan hangat ini. Kalau ada orang yang bikin kamu merasa begini, mungkin ini saat yang pas buat bilang terima kasih atau kirim pesan kecil.',
-  }
-  return fallbacks[mood] || 'Perasaanmu valid. Coba tarik napas dalam beberapa kali dan beri dirimu jeda sebentar. Kamu nggak harus punya jawaban sekarang.'
 }
