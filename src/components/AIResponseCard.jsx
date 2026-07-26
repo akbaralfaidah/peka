@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { renderFormattedText } from '../lib/formatText'
 
 /**
  * AIResponseCard — Kartu hasil saran micro-intervention dari LLM.
@@ -66,7 +67,7 @@ export default function AIResponseCard({ response, mood, onNewCheckin, onViewHis
                 duration: 0.4,
               }}
             >
-              {paragraph}
+              {renderFormattedText(paragraph)}
             </motion.p>
           ))}
         </div>

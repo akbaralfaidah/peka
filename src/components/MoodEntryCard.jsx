@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { getMoodById } from '../lib/moods'
 import { supabase } from '../lib/supabase'
+import { renderFormattedText } from '../lib/formatText'
 
 /**
  * MoodEntryCard — Menampilkan satu entry riwayat mood.
@@ -75,12 +76,11 @@ export default function MoodEntryCard({ entry }) {
         </div>
       )}
 
-      {/* AI Response Preview / Full */}
       <div className="mt-3">
         <div 
-          className={`text-sm text-[var(--color-text-primary)] leading-relaxed relative ${!isExpanded ? 'line-clamp-2' : ''}`}
+          className={`text-sm text-[var(--color-text-primary)] leading-relaxed relative whitespace-pre-wrap ${!isExpanded ? 'line-clamp-2' : ''}`}
         >
-          {entry.ai_response}
+          {renderFormattedText(entry.ai_response)}
         </div>
         
         <button 
