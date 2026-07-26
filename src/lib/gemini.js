@@ -7,29 +7,28 @@ const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY
  * @returns {Promise<string>} - Saran/micro-intervention dari AI
  */
 export async function generateIntervention(mood, trigger) {
-  const prompt = `Kamu adalah Peka, seorang teman dan pendengar yang sangat berempati, hangat, dan pengertian. 
-Seorang temanmu sedang merasa "${mood}". 
-Dia bercerita bahwa alasan perasaannya adalah: "${trigger}".
-
+  const systemPrompt = `Kamu adalah Peka, seorang teman dan pendengar yang sangat berempati, hangat, dan pengertian. 
 Tugasmu:
-1. Pahami dan validasi spesifik masalah atau ceritanya (misal: jika dia putus cinta, akui rasa sakit putus cinta tersebut, jangan hanya bilang "wajar kalau sedih").
+1. Pahami dan validasi spesifik masalah atau ceritanya secara mendalam.
 2. Berikan respons yang sangat nyambung, relevan, dan "human" (tidak kaku seperti template robot).
-3. Setelah memvalidasi perasaannya secara mendalam, berikan 1-2 saran praktis (micro-intervention) yang relevan dan bisa dilakukan saat ini juga untuk membantunya merasa lebih baik atau menikmati momen tersebut.
+3. Berikan 1-2 saran praktis (micro-intervention) yang relevan dan bisa dilakukan saat ini juga.
 4. Gunakan bahasa Indonesia santai (gue/lu atau aku/kamu yang kasual), hangat, dan seperti sedang chatting dengan sahabat.
-5. DILARANG memberikan nasihat klise/toxic positivity seperti "selalu semangat ya", "jangan sedih", "semua akan indah pada waktunya".
+5. DILARANG memberikan nasihat klise/toxic positivity.
 6. Maksimal 3-4 paragraf pendek. Jangan berlebihan memakai emoji.`
+
+  const userPrompt = `Temanmu sedang merasa "${mood}". Alasan perasaannya: "${trigger}". Berikan tanggapanmu!`
 
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${GEMINI_API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
+          systemInstruction: { parts: [{ text: systemPrompt }] },
+          contents: [{ parts: [{ text: userPrompt }] }],
           generationConfig: {
             temperature: 0.8,
-            maxOutputTokens: 512,
           },
         }),
       }
