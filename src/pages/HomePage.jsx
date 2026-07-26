@@ -77,7 +77,20 @@ export default function HomePage() {
     setError(null)
 
     try {
-      const response = await generateIntervention(selectedMood, triggerText || '(tidak disebutkan)')
+      // Ambil riwayat mood hari ini untuk memberikan konteks pada AI
+      const startOfDay = new Date()
+      startOfDay.setHours(0, 0, 0, 0)
+      
+      const { data: todayEntries, error: fetchError } = await supabase
+        .from('mood_entries')
+        .select('created_at, mood, trigger_text')
+        .eq('user_id', user.id)
+        .gte('created_at', startOfDay.toISOString())
+        .order('created_at', { ascending: true })
+        
+      if (fetchError) console.error('Failed to fetch today history:', fetchError)
+
+      const response = await generateIntervention(selectedMood, triggerText || '(tidak disebutkan)', todayEntries || [])
 
       const { error: dbError } = await supabase.from('mood_entries').insert({
         user_id: user.id,
@@ -337,7 +350,7 @@ export default function HomePage() {
 
       {/* Footer Disclaimer */}
       <footer className="relative z-10 text-center px-4 py-3 shrink-0">
-        <p className="text-[14px] text-[var(--color-text-muted)] max-w-sm mx-auto leading-relaxed">
+        <p className="text-[12px] text-[var(--color-text-muted)] max-w-sm mx-auto leading-relaxed">
           Bukan pengganti bantuan profesional. Kalau kamu butuh dukungan lebih, hubungi profesional kesehatan mental atau hubungi 119.
         </p>
       </footer>

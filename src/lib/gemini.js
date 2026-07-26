@@ -6,7 +6,7 @@ const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY
  * @param {string} trigger - Teks pemicu yang diketik user
  * @returns {Promise<string>} - Saran/micro-intervention dari AI
  */
-export async function generateIntervention(mood, trigger) {
+export async function generateIntervention(mood, trigger, todayHistory = []) {
   const systemPrompt = `Kamu adalah Peka, seorang teman dan pendengar yang sangat berempati, hangat, dan pengertian. 
 Tugasmu:
 1. Pahami dan validasi spesifik masalah atau ceritanya secara mendalam.
@@ -16,7 +16,17 @@ Tugasmu:
 5. DILARANG memberikan nasihat klise/toxic positivity.
 6. Maksimal 3-4 paragraf pendek. Jangan berlebihan memakai emoji.`
 
-  const userPrompt = `Temanmu sedang merasa "${mood}". Alasan perasaannya: "${trigger}". Berikan tanggapanmu!`
+  let historyContext = ""
+  if (todayHistory && todayHistory.length > 0) {
+    historyContext = `[KONTEKS PERJALANAN EMOSI HARI INI]:\nSebelumnya pada hari ini, pengguna sudah merasa:\n`
+    todayHistory.forEach(entry => {
+      const time = new Date(entry.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+      historyContext += `- Jam ${time}: merasa "${entry.mood}" karena "${entry.trigger_text || 'tidak disebutkan'}"\n`
+    })
+    historyContext += `Jadikan perjalanan emosi hari ini sebagai pemahaman latar belakangmu agar balasanmu lebih pengertian dan menyentuh, seolah kamu tahu apa yang dia lalui seharian ini.\n\n`
+  }
+
+  const userPrompt = `${historyContext}KONDISI SAAT INI:\nTemanmu sedang merasa "${mood}". Alasan perasaannya: "${trigger}". Berikan tanggapanmu!`
 
   try {
     const response = await fetch(
