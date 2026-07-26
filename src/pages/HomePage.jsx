@@ -155,8 +155,12 @@ export default function HomePage() {
             📋 Riwayat
           </button>
           <button
-            onClick={signOut}
-            className="px-3.5 py-2 text-xs font-medium rounded-[var(--radius-full)] glass text-[var(--color-text-muted)] hover:text-[var(--color-mood-kesal-dark)] hover:bg-[var(--color-mood-kesal-light)] transition-all cursor-pointer"
+            onClick={() => {
+              if (window.confirm('Apakah kamu yakin ingin keluar dari Peka?')) {
+                signOut()
+              }
+            }}
+            className="px-3.5 py-2 text-xs font-medium rounded-[var(--radius-full)] bg-red-50 text-red-600 hover:bg-red-500 hover:text-white border border-red-100 hover:border-red-500 transition-all cursor-pointer"
             id="btn-signout"
           >
             Keluar
@@ -335,7 +339,7 @@ export default function HomePage() {
       {/* Footer Disclaimer */}
       <footer className="relative z-10 text-center px-4 py-3 shrink-0">
         <p className="text-[10px] text-[var(--color-text-muted)] max-w-sm mx-auto leading-relaxed">
-          Bukan pengganti bantuan profesional. Kalau kamu butuh dukungan lebih, hubungi profesional kesehatan mental.
+          Bukan pengganti bantuan profesional. Kalau kamu butuh dukungan lebih, hubungi profesional kesehatan mental atau hubungi 119.
         </p>
       </footer>
     </div>
