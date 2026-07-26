@@ -49,9 +49,9 @@
 
 ## Tahap 8 (85%) — Animations & Polish
 - [x] Framer Motion animations
-- [ ] ReminderBanner
-- [ ] UI polish
-- [ ] Git push
+- [x] ReminderBanner
+- [x] UI polish
+- [x] Git push
 
 ## Tahap 9 (95%) — Mood Recap Card
 - [ ] RecapCardGenerator

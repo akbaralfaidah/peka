@@ -9,6 +9,7 @@ import MoodPicker from '../components/MoodPicker'
 import TriggerInput from '../components/TriggerInput'
 import AIResponseCard from '../components/AIResponseCard'
 import LoadingAI from '../components/LoadingAI'
+import ReminderBanner from '../components/ReminderBanner'
 
 /**
  * HomePage — Halaman utama Mood Check-in.
@@ -147,6 +148,7 @@ export default function HomePage() {
 
       {/* Main content */}
       <main className="relative z-10 flex-1 flex flex-col px-4 sm:px-6 py-4 sm:py-6">
+        <ReminderBanner />
         <AnimatePresence mode="wait">
 
           {/* ========================= STEP: SELECT ========================= */}
