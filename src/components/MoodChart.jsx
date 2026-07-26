@@ -1,53 +1,87 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { getMoodById } from '../lib/moods'
 
 export default function MoodChart({ entries }) {
+  const [timeFilter, setTimeFilter] = useState('7days')
+
   const distribution = useMemo(() => {
     if (!entries || entries.length === 0) return []
 
-    const counts = entries.reduce((acc, entry) => {
+    // Filter by time
+    const filteredEntries = entries.filter(entry => {
+      if (timeFilter === 'all') return true
+      
+      const entryDate = new Date(entry.created_at)
+      const now = new Date()
+      const diffTime = Math.abs(now - entryDate)
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+      
+      if (timeFilter === '7days') return diffDays <= 7
+      if (timeFilter === '30days') return diffDays <= 30
+      return true
+    })
+
+    if (filteredEntries.length === 0) return []
+
+    const counts = filteredEntries.reduce((acc, entry) => {
       acc[entry.mood] = (acc[entry.mood] || 0) + 1
       return acc
     }, {})
 
-    const total = entries.length
+    const total = filteredEntries.length
     
     // Convert to array and sort by percentage descending
     const data = Object.keys(counts).map(moodId => {
       const moodDef = getMoodById(moodId)
+      const perc = Math.round((counts[moodId] / total) * 100)
       return {
         ...moodDef,
         count: counts[moodId],
-        percentage: Math.round((counts[moodId] / total) * 100)
+        percentage: Math.max(1, perc) // Ensure at least 1% so it's visible
       }
     }).sort((a, b) => b.count - a.count)
 
     return data
-  }, [entries])
-
-  if (distribution.length === 0) return null
+  }, [entries, timeFilter])
 
   return (
     <div className="bg-white/60 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-[var(--color-border-light)] mt-6">
-      <h3 className="font-bold text-[var(--color-text-primary)] mb-4 flex items-center gap-2">
-        <span>📊</span> Distribusi Mood
-      </h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="font-bold text-[var(--color-text-primary)] flex items-center gap-2">
+          <span>📊</span> Distribusi
+        </h3>
+        <select 
+          value={timeFilter} 
+          onChange={(e) => setTimeFilter(e.target.value)}
+          className="text-xs bg-white/50 border border-gray-200 rounded-full px-3 py-1.5 text-[var(--color-text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] cursor-pointer"
+        >
+          <option value="7days">7 Hari Terakhir</option>
+          <option value="30days">30 Hari Terakhir</option>
+          <option value="all">Semua Waktu</option>
+        </select>
+      </div>
       
       {/* Segmented Bar */}
-      <div className="h-6 w-full rounded-full overflow-hidden flex shadow-inner bg-gray-100 mb-6">
-        {distribution.map((item, index) => (
-          <motion.div
-            key={item.id}
-            initial={{ width: 0 }}
-            animate={{ width: `${item.percentage}%` }}
-            transition={{ duration: 1, delay: index * 0.1, ease: 'easeOut' }}
-            className="h-full first:rounded-l-full last:rounded-r-full border-r border-white/20 last:border-0"
-            style={{ backgroundColor: item.color }}
-            title={`${item.label}: ${item.percentage}%`}
-          />
-        ))}
-      </div>
+      {distribution.length > 0 ? (
+        <div className="h-6 w-full rounded-full overflow-hidden flex shadow-inner bg-gray-100 mb-6">
+          {distribution.map((item, index) => (
+            <motion.div
+              key={item.id}
+              initial={{ width: 0 }}
+              animate={{ width: `${item.percentage}%` }}
+              transition={{ duration: 1, delay: index * 0.1, ease: 'easeOut' }}
+              className="h-full first:rounded-l-full last:rounded-r-full border-r border-white/20 last:border-0 min-w-[4px]"
+              style={{ backgroundColor: item.color }}
+              title={`${item.label}: ${item.percentage}%`}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="h-6 w-full rounded-full bg-gray-100 mb-6 flex items-center justify-center">
+          <span className="text-[10px] text-gray-400">Belum ada data</span>
+        </div>
+      )}
 
       {/* Legend / Details */}
       <div className="space-y-3">
