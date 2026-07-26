@@ -76,37 +76,37 @@ export default function RecapCardGenerator({ entries }) {
         </button>
       </div>
 
-      <div className="overflow-hidden rounded-[var(--radius-xl)] shadow-[var(--shadow-md)]">
-        {/* The Card to be captured */}
+      <div className="overflow-hidden rounded-[var(--radius-xl)] shadow-[var(--shadow-md)] flex justify-center bg-gray-50/50 p-4">
+        {/* The Card to be captured - fixed 9:16 aspect ratio */}
         <div 
           ref={cardRef} 
-          className="relative w-full aspect-square sm:aspect-[4/3] p-8 flex flex-col items-center justify-center text-center overflow-hidden"
+          className="relative w-full max-w-[360px] aspect-[9/16] p-8 flex flex-col items-center justify-center text-center overflow-hidden rounded-3xl"
           style={{ background: topMood.colorLight }}
         >
           {/* Decorative background blobs */}
-          <div className="absolute -top-10 -left-10 w-40 h-40 rounded-full blur-[40px] opacity-60" style={{ background: topMood.color }} />
-          <div className="absolute -bottom-10 -right-10 w-48 h-48 rounded-full blur-[40px] opacity-40" style={{ background: topMood.colorDark }} />
+          <div className="absolute -top-20 -left-20 w-64 h-64 rounded-full blur-[60px] opacity-60" style={{ background: topMood.color }} />
+          <div className="absolute -bottom-20 -right-20 w-72 h-72 rounded-full blur-[60px] opacity-40" style={{ background: topMood.colorDark }} />
           
-          <div className="relative z-10 glass px-6 py-8 rounded-[var(--radius-xl)] w-full max-w-sm border-2" style={{ borderColor: topMood.color }}>
-            <p className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-4">
+          <div className="relative z-10 glass px-6 py-10 rounded-[var(--radius-xl)] w-full border-2 flex flex-col items-center" style={{ borderColor: topMood.color }}>
+            <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-6">
               Minggu ini di Peka
             </p>
-            <div className="text-6xl mb-4">{topMood.emoji}</div>
-            <h4 className="text-xl font-bold text-[var(--color-text-primary)] mb-2">
+            <div className="text-7xl mb-6 drop-shadow-md">{topMood.emoji}</div>
+            <h4 className="text-2xl font-bold text-[var(--color-text-primary)] mb-3 leading-tight">
               Lagi sering ngerasa <br/>
-              <span style={{ color: topMood.colorDark }}>{topMood.label}</span>
+              <span style={{ color: topMood.colorDark }} className="text-3xl">{topMood.label}</span>
             </h4>
-            <p className="text-sm text-[var(--color-text-secondary)] mb-6">
-              Kamu check-in {totalEntries} kali minggu ini.
-              <br/>
+            <p className="text-sm text-[var(--color-text-secondary)] mb-8 leading-relaxed px-2">
+              Kamu check-in <span className="font-bold text-[var(--color-text-primary)]">{totalEntries}</span> kali minggu ini.
+              <br/><br/>
               {isPositive 
                 ? 'Wah, energi positifmu lagi bersinar! ✨ Terus pertahankan ya.' 
                 : 'Nggak apa-apa kok kalau lagi berat. Peluk jauh buat kamu. 🫂'}
             </p>
 
-            <div className="pt-4 border-t border-black/5 flex items-center justify-center gap-2">
-              <img src="/peka.png" alt="Peka Logo" className="w-5 h-5 object-contain opacity-80" />
-              <span className="text-xs font-bold text-[var(--color-text-muted)]">Peka</span>
+            <div className="pt-5 w-full border-t border-black/10 flex items-center justify-center gap-2">
+              <img src="/peka.png" alt="Peka Logo" className="w-6 h-6 object-contain opacity-80" />
+              <span className="text-sm font-bold text-[var(--color-text-muted)] tracking-wide">Peka</span>
             </div>
           </div>
         </div>

@@ -12,15 +12,27 @@ export default function TriggerInput({ value, onChange, disabled = false, select
   const [isFocused, setIsFocused] = useState(false)
   const maxLength = 280
 
-  const placeholders = [
-    'Abis dimarahin bos soal deadline...',
-    'Besok ada presentasi, belum siap...',
-    'Temen-temen pada jalan, aku nggak diajak...',
-    'Capek banget, kerja terus dari pagi...',
+  const dynamicPlaceholders = {
+    'kewalahan': 'Tugas numpuk, bingung mau mulai dari mana...',
+    'cemas': 'Besok ada presentasi, takut salah ngomong...',
+    'kesal': 'Abis dimarahin bos padahal bukan salahku...',
+    'sedih': 'Merasa kesepian karena diputusin pacar...',
+    'capek': 'Kerja dari pagi sampai malam, nggak ada berhentinya...',
+    'senang': 'Baru dapet kabar baik hari ini! Yay!',
+    'bersemangat': 'Hari pertama mulai project impian!',
+    'santai': 'Lagi ngopi sambil dengerin playlist favorit...',
+    'percaya-diri': 'Baru aja berhasil nyelesaiin tantangan besar!',
+    'romantis': 'Pasangan ngasih kejutan manis banget hari ini...',
+  }
+
+  const genericPlaceholders = [
     'Lagi overthinking soal masa depan...',
+    'Temen-temen pada jalan, aku nggak diajak...',
   ]
 
-  const placeholder = placeholders[Math.floor(Date.now() / 60000) % placeholders.length]
+  const placeholder = selectedMood?.id 
+    ? dynamicPlaceholders[selectedMood.id] || genericPlaceholders[0]
+    : genericPlaceholders[Math.floor(Date.now() / 60000) % genericPlaceholders.length]
 
   return (
     <motion.div

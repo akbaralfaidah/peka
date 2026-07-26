@@ -91,8 +91,8 @@ export default function HomePage() {
     navigate('/history')
   }, [navigate])
 
-  // Display name from email
-  const displayName = user?.email?.split('@')[0] || ''
+  // Display name dari metadata (jika ada) atau fallback ke email
+  const displayName = user?.user_metadata?.display_name || user?.email?.split('@')[0] || ''
 
   return (
     <div className="min-h-[100dvh] flex flex-col gradient-warm relative overflow-hidden">
